@@ -1,10 +1,11 @@
 class Train # класс поезд
-
+  attr_accessor :station
+  attr_reader :speed, :number, :car_count, :route, :type
   def initialize(number, type, car_count) # конструктор
     @number = number # присвоение переменной к @инстанс переменной. Которую видно во всем классе.
     @type = type # тип поезда
     @car_count = car_count # количество вагонов
-    @speed = 0 # скорость поездаs
+    @speed = 0 # скорость поезда
   end
 
   def stop # метод остановки поезда
@@ -12,24 +13,40 @@ class Train # класс поезд
   end
 
   def add_car # метод прибавляет вагоны
-    speed.zero? # сравнивает скорость с 0. Используем zero, т.к. может быть число с плавающей точкой
-    self.car_count += 1 # прибавляет один поезд (через self получаем доступ к объекту)  
+    return unless speed.zero? # выполняем пока скорость не будет 0. Используем zero, т.к. может быть число с плавающей точкой
+    @car_count += 1 # прибавляет один поезд
   end
 
   def remove_car # метод удаляет поезд из массива
-    if car_count.zero? # сраниваем кол-во вагонов с 0
-      puts "Вагонов уже не осталось."
-    elsif speed.zero? # сраниваем скорость поезда с нулем
-      self.car_count -=1 # получаем доступ к объекту внутри метода и убираем один вагон
-      puts "От поезда № #{number} отцепили вагон.Теперь их #{car_count}."
-    else
-      puts "На ходу нельзя отцеплять вагоны!"
-    end
+    return unless speed.zero?
+    return unless car_count.positive?
+    @car_count -= 1
   end
 
   def take_route(route) # метод задает маршрут поезду
-    self.route = route # получаем доступ к переменной внутри метода и устанавливаем значение
-    puts "Поезду №#{number} задан маршрут #{route.stations.first.name} - #{route.stations.last.name}"
+    @route = route
+    @current_station = 0
+    current_station.get_train(self)
+  end
+
+  def current_station
+    route.stations[@current_station]
+  end
+
+  def next_station
+    route.stations[@current_station + 1]
+  end
+
+  def prev_station
+    route.stations[@current_station - 1]
+  end
+
+  def go_to_next_station
+    route.stations[@current_station + 1].get_train(self)
+  end
+
+  def go_to_prev_station
+    route.stations[@current_station - 1].get_train(self)
   end
 
   def go_to(station) # задаем станцию для прибытия
@@ -40,7 +57,7 @@ class Train # класс поезд
     elsif route.stations.include?(station) # проверка станции в маршруте , но точно не понял
       @station.send_train(self) if @station # Обращается к методу в другом классе ,чтоб добавить станцию в массив
       @station = station # ТАК ПОНЯЛ ПРИСВАИВАЕМ К ИНСТАНС ПЕРЕМЕННОЙ
-      station.ger_train(self) #  обращается к методу класса station
+      station.get_train(self) #  обращается к методу класса station
     else
       puts "Станция #{station.name} не входит в маршрут №#{number}"
     end
