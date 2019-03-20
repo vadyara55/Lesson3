@@ -38,39 +38,20 @@ class Train # класс поезд
   end
 
   def prev_station
+    return unless @current_station > 0
     route.stations[@current_station - 1]
   end
 
   def go_to_next_station
-    route.stations[@current_station + 1].get_train(self)
+    return if next_station.nil?
+    current_station.get_train(self)
+    next_station.get_train(self)
+    @current_station += 1
   end
 
   def go_to_prev_station
-    route.stations[@current_station - 1].get_train(self)
-  end
-
-  def go_to(station) # задаем станцию для прибытия
-    if route.nil? # проверяем задан ли маршрут, пуст ли он.
-      puts "Без маршрута поезд заблудится."
-    elsif @station == station # проверяем стоит ли поезд уже на этой станции
-      puts "Поезд №#{number} и так на станции #{@station.name}"
-    elsif route.stations.include?(station) # проверка станции в маршруте , но точно не понял
-      @station.send_train(self) if @station # Обращается к методу в другом классе ,чтоб добавить станцию в массив
-      @station = station # ТАК ПОНЯЛ ПРИСВАИВАЕМ К ИНСТАНС ПЕРЕМЕННОЙ
-      station.get_train(self) #  обращается к методу класса station
-    else
-      puts "Станция #{station.name} не входит в маршрут №#{number}"
-    end
-  end
-
-  def stations_around # метод для вывода станциий
-    if route.nil? # проверяем задан ли маршрут
-      puts "Маршрут не задан"
-    else
-      station_index = route.stations.index(station) # переменная равна индексу станции в массиве(маршруте)
-      puts "Сейчас поезд на станции #{station.name}."
-      puts "Предыдущая станция - #{route.station[station_index - 1].name}." if station_index != 0 # если индекс не равен 0, то выведется
-      puts "Следущая  - #{route.stations[stations_index + 1].name}." if station_index != route.stations.size - 1 # если не равно индексу предыдущей станции ,то выведется
-    end
+    current_station.get_train(self)
+    prev_station.get_train(self)
+    @current_station -= 1
   end
 end
