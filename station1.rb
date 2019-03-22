@@ -14,6 +14,6 @@ class Station  # класс станция
   end
 
   def trains_by_type(type)# метод задает тип поезда, прибывшего на станцию
-      trains.select { |train| train.type == type}
+    trains.select { |train| train.type == type }
   end
 end
