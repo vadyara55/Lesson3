@@ -11,11 +11,11 @@ attr_reader :stations
   end
 
   def remove_station(station) # удаляет станцию из маршрута
-    return if [stations.first, station.last].include?(station) 
+    return if [stations.first, stations.last].include?(station)
     stations.delete(station)
   end
 
   def show_stations # метод показывает станции
-    stations.each { |station| puts " #{station.name}" } # перебирает станации входящие в массив и выводит их имена
+    stations.each { |station| puts " #{station}" } # перебирает станации входящие в массив и выводит их имена
   end
 end

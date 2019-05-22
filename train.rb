@@ -44,7 +44,7 @@ class Train # класс поезд
 
   def go_to_next_station
     return if next_station.nil?
-    send_train.get_train(self)
+    current_station.send_train(self)
     next_station.get_train(self)
     @current_station += 1
   end
