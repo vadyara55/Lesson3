@@ -1,29 +1,31 @@
-class Train # класс поезд
+class Train
+
   attr_accessor :station
   attr_reader :speed, :number, :car_count, :route, :type
-  def initialize(number, type, car_count) # конструктор
-    @number = number # присвоение переменной к @инстанс переменной. Которую видно во всем классе.
-    @type = type # тип поезда
-    @car_count = car_count # количество вагонов
-    @speed = 0 # скорость поезда
+
+  def initialize(number, type, car_count)
+    @number = number
+    @type = type
+    @car_count = car_count
+    @speed = 0
   end
 
-  def stop # метод остановки поезда
-    self.speed = 0 # self в данном случае вызывает сеттер
+  def stop
+    self.speed = 0
   end
 
-  def add_car # метод прибавляет вагоны
-    return unless speed.zero? # выполняем пока скорость не будет 0. Используем zero, т.к. может быть число с плавающей точкой
-    @car_count += 1 # прибавляет один поезд
+  def add_car
+    return unless speed.zero?
+    @car_count += 1
   end
 
-  def remove_car # метод удаляет поезд из массива
+  def remove_car
     return unless speed.zero?
     return unless car_count.positive?
     @car_count -= 1
   end
 
-  def take_route(route) # метод задает маршрут поезду
+  def take_route(route)
     @route = route
     @current_station = 0
     current_station.get_train(self)
@@ -49,9 +51,9 @@ class Train # класс поезд
     @current_station += 1
   end
 
-  def go_to_prev_station
+  def go_to_previous_station
     return if prev_station.nil?
-    send_train.get_train(self)
+    current_station.send_train(self)
     prev_station.get_train(self)
     @current_station -= 1
   end
