@@ -1,7 +1,6 @@
 class Train
 
-  attr_accessor :station
-  attr_reader :speed, :number, :car_count, :route, :type
+  attr_reader :number, :car_count, :route, :type
 
   def initialize(number, type, car_count)
     @number = number
@@ -12,6 +11,15 @@ class Train
 
   def stop
     self.speed = 0
+  end
+
+  def increase_speed(speed)
+    @speed += speed
+    @speed = 0 if speed < 0
+  end
+
+  def current_speed
+    @speed
   end
 
   def add_car

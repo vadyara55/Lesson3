@@ -1,6 +1,6 @@
 class Route
 
-attr_reader :stations
+  attr_reader :stations
 
   def initialize(from, to)
     @stations = [from, to]
@@ -16,6 +16,6 @@ attr_reader :stations
   end
 
   def show_stations
-    stations.each { |station| puts " #{station.name}" } 
+    stations.each { |station| puts " #{station.name}" }
   end
 end
